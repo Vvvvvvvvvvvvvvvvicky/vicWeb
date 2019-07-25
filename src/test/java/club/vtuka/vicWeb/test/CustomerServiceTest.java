@@ -4,6 +4,7 @@ import club.vtuka.vicWeb.model.Customer;
 import club.vtuka.vicWeb.service.CustomerService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void getCustomerListTest() throws Exception {
+    public void getCustomerListTest() {
         List<Customer> customerList = customerService.getCustomerList();
         Assert.assertEquals(2,customerList.size());
     }
@@ -54,7 +55,7 @@ public class CustomerServiceTest {
         Assert.assertTrue(b);
     }
 
-    @Test
+    @Ignore
     public void deleteCustomerTest(){
         Long id = 1L;
         boolean b = customerService.deleteCustomer(id);

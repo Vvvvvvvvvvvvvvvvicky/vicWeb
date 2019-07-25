@@ -21,7 +21,8 @@ public class CustomerService {
     }
 
     public Customer getCustomer(Long id){
-        return null;
+        String sql = "select * from customer where id = ?";
+        return DataBaseHelper.queryEntity(Customer.class,sql,id);
     }
 
     public boolean createCustomer(Map<String,Object> fieldMap){
