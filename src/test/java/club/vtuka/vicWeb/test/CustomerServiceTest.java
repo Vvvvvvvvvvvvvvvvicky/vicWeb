@@ -1,12 +1,18 @@
 package club.vtuka.vicWeb.test;
 
+import club.vtuka.vicWeb.helper.DataBaseHelper;
 import club.vtuka.vicWeb.model.Customer;
 import club.vtuka.vicWeb.service.CustomerService;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,8 +25,9 @@ public class CustomerServiceTest {
     }
 
     @Before
-    public void init(){
-
+    public void init() throws IOException {
+        String file = "sql/customer_init.sql";
+        DataBaseHelper.executeSqlFile(file);
     }
 
     @Test
@@ -55,7 +62,7 @@ public class CustomerServiceTest {
         Assert.assertTrue(b);
     }
 
-    @Ignore
+    @Test
     public void deleteCustomerTest(){
         Long id = 1L;
         boolean b = customerService.deleteCustomer(id);

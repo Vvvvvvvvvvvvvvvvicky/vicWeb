@@ -7,8 +7,13 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -122,7 +127,7 @@ public class DataBaseHelper {
      * @param params
      * @return
      */
-    private static int executeUpdate(String sql, Object ... params){
+    public static int executeUpdate(String sql, Object ... params){
         int result;
         try {
             Connection connection = getConnection();
@@ -177,6 +182,21 @@ public class DataBaseHelper {
     public static <T> boolean deleteEntity(Class<T> entityClass, long id){
         String deleteSql = "delete from " + getTableName(entityClass) + " where id = ?";
         return executeUpdate(deleteSql,id) == 1;
+    }
+
+    public static void executeSqlFile(String file){
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String sql;
+        try{
+            while(StringUtils.isNotEmpty(sql = reader.readLine())){
+                DataBaseHelper.executeUpdate(sql);
+            }
+        }catch(Exception e){
+            LOGGER.error("execute sql file failure",e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static String getTableName(Class<?> entityClass){
